@@ -8,7 +8,9 @@ pub struct Framebuffer {
 
 impl Framebuffer {
     // Constructor para inicializar el framebuffer
-    pub fn new(width: usize, height: usize, background_color: u32, current_color: u32) -> Framebuffer {
+    pub fn new(width: usize, height: usize) -> Self {
+        let background_color = 0x000000; // Negro por defecto
+        let current_color = 0xFFFFFF; // Blanco por defecto
         let buffer = vec![background_color; width * height];
         Framebuffer {
             width,
@@ -19,15 +21,31 @@ impl Framebuffer {
         }
     }
 
-    // Método para establecer el color de un píxel
-    pub fn set_pixel(&mut self, x: usize, y: usize) {
-        if x < self.width && y < self.height {
-            let index = y * self.width + x;
+    // Método para limpiar el framebuffer con el color de fondo
+    pub fn clear(&mut self) {
+        self.buffer.fill(self.background_color);
+    }
+
+    // Método para dibujar un punto en (x, y) usando el color actual
+    pub fn point(&mut self, x: isize, y: isize) {
+        if x >= 0 && y >= 0 && (x as usize) < self.width && (y as usize) < self.height {
+            let index = (y as usize) * self.width + (x as usize);
             self.buffer[index] = self.current_color;
         }
     }
 
-    // Método para obtener el color de un píxel
+    // Método para establecer el color de fondo
+    pub fn set_background_color(&mut self, color: u32) {
+        self.background_color = color;
+        self.clear(); // Asegurarse de que el framebuffer se limpie con el nuevo color de fondo
+    }
+
+    // Método para establecer el color actual
+    pub fn set_current_color(&mut self, color: u32) {
+        self.current_color = color;
+    }
+
+    // Método para obtener el valor en una posición (x, y)
     pub fn get_pixel(&self, x: usize, y: usize) -> Option<u32> {
         if x < self.width && y < self.height {
             Some(self.buffer[y * self.width + x])
@@ -44,21 +62,6 @@ impl Framebuffer {
                 print!("{:#X} ", color);
             }
             println!();
-        }
-    }
-
-    // Método para cambiar el color de primer plano
-    pub fn set_current_color(&mut self, color: u32) {
-        self.current_color = color;
-    }
-
-    // Método para cambiar el color de fondo
-    pub fn set_background_color(&mut self, color: u32) {
-        self.background_color = color;
-        for i in 0..self.buffer.len() {
-            if self.buffer[i] == self.background_color {
-                self.buffer[i] = color;
-            }
         }
     }
 }

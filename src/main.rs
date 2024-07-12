@@ -1,21 +1,24 @@
 mod color;
-use color::Color;
+mod framebuffer;
+use framebuffer::Framebuffer;
 
 fn main() {
-    // Inicialización con valores RGB
-    let red = Color::new(255, 0, 0);
-    println!("{:?}", red);
+    // Creamos un framebuffer de 10x10 píxeles
+    let mut fb = Framebuffer::new(10, 10);
 
-    // Inicialización con un valor hexadecimal
-    let green = Color::from_hex(0x00FF00);
-    println!("{:?}", green);
+    // Limpiamos el framebuffer con el color de fondo (negro por defecto)
+    fb.clear();
 
-    // Conversión de RGB a hexadecimal
-    let red_hex = red.to_hex();
-    println!("Red in hex: {:#X}", red_hex);
+    // Dibujamos algunos puntos con el color actual (blanco por defecto)
+    fb.point(0, 0); // Esquina superior izquierda
+    fb.point(9, 9); // Esquina inferior derecha
+    fb.point(5, 5); // Centro
 
-    // Mezcla de colores
-    let mixed_color = red.mix(&green);
-    println!("Mixed color: {:?}", mixed_color);
+    // Cambiamos el color actual a verde y dibujamos más puntos
+    fb.set_current_color(0x00FF00);
+    fb.point(4, 4);
+    fb.point(6, 6);
+
+    // Mostramos el contenido del framebuffer
+    fb.display();
 }
-
