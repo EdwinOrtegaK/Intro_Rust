@@ -1,3 +1,5 @@
+use crate::bmp;
+
 pub struct Framebuffer {
     pub width: usize,
     pub height: usize,
@@ -63,5 +65,15 @@ impl Framebuffer {
             }
             println!();
         }
+    }
+
+    // Método para escribir el framebuffer a un archivo BMP
+    pub fn write_to_file(&self, file_path: &str) -> std::io::Result<()> {
+        bmp::write_bmp_file(file_path, &self.buffer, self.width, self.height)
+    }
+
+    // Método para renderizar el framebuffer a un archivo BMP
+    pub fn render_buffer(&self, file_path: &str) -> std::io::Result<()> {
+        self.write_to_file(file_path)
     }
 }

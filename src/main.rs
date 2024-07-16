@@ -1,24 +1,34 @@
 mod color;
 mod framebuffer;
+mod bmp;
 use framebuffer::Framebuffer;
 
-fn main() {
-    // Creamos un framebuffer de 10x10 píxeles
-    let mut fb = Framebuffer::new(10, 10);
+fn main() -> std::io::Result<()> {
+    let mut framebuffer = Framebuffer::new(800, 600);
 
-    // Limpiamos el framebuffer con el color de fondo (negro por defecto)
-    fb.clear();
+    framebuffer.set_background_color(0xADD8E6); // Light blue
+    framebuffer.clear();
 
-    // Dibujamos algunos puntos con el color actual (blanco por defecto)
-    fb.point(0, 0); // Esquina superior izquierda
-    fb.point(9, 9); // Esquina inferior derecha
-    fb.point(5, 5); // Centro
+    framebuffer.set_current_color(0xFF0000); // Red
+    framebuffer.point(400, 300);
+    framebuffer.point(401, 300);
+    framebuffer.point(400, 301);
+    framebuffer.point(401, 301);
 
-    // Cambiamos el color actual a verde y dibujamos más puntos
-    fb.set_current_color(0x00FF00);
-    fb.point(4, 4);
-    fb.point(6, 6);
+    framebuffer.set_current_color(0x00FF00); // Green
+    framebuffer.point(200, 150);
+    framebuffer.point(201, 150);
+    framebuffer.point(200, 151);
+    framebuffer.point(201, 151);
 
-    // Mostramos el contenido del framebuffer
-    fb.display();
+    framebuffer.set_current_color(0x0000FF); // Blue
+    framebuffer.point(600, 450);
+    framebuffer.point(601, 450);
+    framebuffer.point(600, 451);
+    framebuffer.point(601, 451);
+
+    framebuffer.render_buffer("output.bmp")?;
+
+    println!("Framebuffer rendered to output.bmp");
+    Ok(())
 }
