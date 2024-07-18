@@ -16,7 +16,7 @@ impl Line for Framebuffer {
         let mut err = dx + dy;
 
         loop {
-            self.point(x as isize, y as isize); // Dibujar el punto en el framebuffer
+            self.point(x.round() as isize, y.round() as isize); // Redondear antes de dibujar
 
             if x == x2 && y == y2 { break; }
             let e2 = 2.0 * err;
