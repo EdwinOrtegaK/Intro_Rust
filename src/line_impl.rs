@@ -7,26 +7,32 @@ pub trait Line {
 
 impl Line for Framebuffer {
     fn line(&mut self, start: Vertex, end: Vertex) {
-        let (mut x, mut y, _) = (start.x, start.y, start.z);
-        let (x2, y2, _) = (end.x, end.y, end.z);
-        let dx = (x2 - x).abs();
-        let dy = -(y2 - y).abs();
-        let sx = if x < x2 { 1.0 } else { -1.0 };
-        let sy = if y < y2 { 1.0 } else { -1.0 };
+        let mut x0 = start.x.round();
+        let mut y0 = start.y.round();
+        let x1 = end.x.round();
+        let y1 = end.y.round();
+
+        println!("Drawing line from ({}, {}) to ({}, {})", x0, y0, x1, y1);
+
+        let dx = (x1 - x0).abs();
+        let dy = -(y1 - y0).abs();
+        let sx = if x0 < x1 { 1.0 } else { -1.0 };
+        let sy = if y0 < y1 { 1.0 } else { -1.0 };
         let mut err = dx + dy;
 
         loop {
-            self.point(x.round() as isize, y.round() as isize); // Redondear antes de dibujar
+            self.point(x0 as isize, y0 as isize);
 
-            if x == x2 && y == y2 { break; }
+            if x0 == x1 && y0 == y1 { break; }
+
             let e2 = 2.0 * err;
             if e2 >= dy {
                 err += dy;
-                x += sx;
+                x0 += sx;
             }
             if e2 <= dx {
                 err += dx;
-                y += sy;
+                y0 += sy;
             }
         }
     }
