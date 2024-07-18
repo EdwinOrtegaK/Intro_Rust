@@ -1,34 +1,34 @@
 mod color;
 mod framebuffer;
+mod line_impl;
 mod bmp;
+mod vertex;
+
 use framebuffer::Framebuffer;
+use line_impl::Line;
+use vertex::Vertex;
 
-fn main() -> std::io::Result<()> {
-    let mut framebuffer = Framebuffer::new(800, 600);
+fn main() {
+    let width = 800;
+    let height = 600;
+    let mut framebuffer = Framebuffer::new(width, height);
 
-    framebuffer.set_background_color(0xADD8E6); // Light blue
+    // Limpiar el framebuffer con un fondo blanco
+    framebuffer.set_background_color(0xFFFFFF);
     framebuffer.clear();
 
-    framebuffer.set_current_color(0xFF0000); // Red
-    framebuffer.point(400, 300);
-    framebuffer.point(401, 300);
-    framebuffer.point(400, 301);
-    framebuffer.point(401, 301);
+    // Establecer el color de dibujo actual a negro
+    framebuffer.set_current_color(0x000000);
 
-    framebuffer.set_current_color(0x00FF00); // Green
-    framebuffer.point(200, 150);
-    framebuffer.point(201, 150);
-    framebuffer.point(200, 151);
-    framebuffer.point(201, 151);
+    // Dibujar un cuadrado usando el algoritmo de Bresenham
+    framebuffer.line(Vertex::new(100.0, 100.0), Vertex::new(700.0, 100.0));
+    framebuffer.line(Vertex::new(700.0, 100.0), Vertex::new(700.0, 500.0));
+    framebuffer.line(Vertex::new(700.0, 500.0), Vertex::new(100.0, 500.0));
+    framebuffer.line(Vertex::new(100.0, 500.0), Vertex::new(100.0, 100.0));
 
-    framebuffer.set_current_color(0x0000FF); // Blue
-    framebuffer.point(600, 450);
-    framebuffer.point(601, 450);
-    framebuffer.point(600, 451);
-    framebuffer.point(601, 451);
+    // Guardar el framebuffer como un archivo BMP
+    framebuffer.render_buffer("square.bmp");
 
-    framebuffer.render_buffer("output.bmp")?;
-
-    println!("Framebuffer rendered to output.bmp");
-    Ok(())
+    println!("Framebuffer rendered to square.bmp");
 }
+
