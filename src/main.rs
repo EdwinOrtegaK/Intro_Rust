@@ -7,7 +7,7 @@ mod polygon_impl;
 
 use framebuffer::Framebuffer;
 use line_impl::Line;
-use vertex::Vertex;
+use vertex::new_vertex;
 use polygon_impl::Polygon;
 
 fn main() {
@@ -22,12 +22,12 @@ fn main() {
     // Establecer el color de dibujo actual a negro
     framebuffer.set_current_color(0x000000);
 
-    // Definir los puntos del polígono
+    // Definir los puntos del polígono usando vértices 3D
     let points = vec![
-        Vertex::new(100.0, 100.0),
-        Vertex::new(700.0, 100.0),
-        Vertex::new(700.0, 500.0),
-        Vertex::new(100.0, 500.0),
+        new_vertex(100.0, 100.0, 0.0),
+        new_vertex(700.0, 100.0, 0.0),
+        new_vertex(700.0, 500.0, 0.0),
+        new_vertex(100.0, 500.0, 0.0),
     ];
 
     // Dibujar el polígono

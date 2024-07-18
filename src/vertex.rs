@@ -1,14 +1,7 @@
-#[derive(Clone, Copy)]
-pub struct Vertex {
-    pub x: isize,
-    pub y: isize,
-}
+extern crate nalgebra_glm as glm;
 
-impl Vertex {
-    pub fn new(x: f32, y: f32) -> Self {
-        Vertex {
-            x: x.round() as isize,
-            y: y.round() as isize,
-        }
-    }
+pub type Vertex = glm::Vec3;
+
+pub fn new_vertex(x: f32, y: f32, z: f32) -> Vertex {
+    glm::vec3(x, y, z)
 }
